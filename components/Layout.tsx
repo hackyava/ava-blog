@@ -15,20 +15,20 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
             </span>
           </Link>
           
-          <nav className="flex items-center space-x-6 text-sm font-medium text-slate-400">
-            <Link href="/" className="hover:text-indigo-400 transition-colors flex items-center gap-1.5">
-              <Home className="w-4 h-4" />
-              <span>Home</span>
+          <nav className="flex items-center gap-4 sm:gap-6 text-sm font-medium text-slate-400">
+            <Link href="/" className="hover:text-indigo-400 transition-colors flex items-center gap-2 p-2 sm:p-0 rounded-md hover:bg-slate-900/50 sm:hover:bg-transparent">
+              <Home className="w-5 h-5 sm:w-4 sm:h-4" />
+              <span className="hidden sm:inline">Home</span>
             </Link>
-            <a href="https://github.com/hackyava" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-400 transition-colors flex items-center gap-1.5">
-              <Github className="w-4 h-4" />
-              <span>GitHub</span>
+            <a href="https://github.com/hackyava" target="_blank" rel="noopener noreferrer" className="hover:text-indigo-400 transition-colors flex items-center gap-2 p-2 sm:p-0 rounded-md hover:bg-slate-900/50 sm:hover:bg-transparent">
+              <Github className="w-5 h-5 sm:w-4 sm:h-4" />
+              <span className="hidden sm:inline">GitHub</span>
             </a>
           </nav>
         </div>
       </header>
 
-      <main className="flex-grow container mx-auto px-4 py-12 max-w-4xl animate-fade-in">
+      <main className="flex-grow container mx-auto px-4 py-8 sm:py-12 max-w-4xl animate-fade-in">
         {children}
       </main>
 

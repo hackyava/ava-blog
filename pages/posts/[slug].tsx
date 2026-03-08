@@ -18,15 +18,15 @@ export default function PostPage({ post }: PostPageProps) {
         </Link>
 
         <article className="animate-fade-in-up">
-          <header className="mb-10 text-center">
+          <header className="mb-6 sm:mb-10 text-center">
              {post.date && (
-              <time className="block text-sm text-slate-500 mb-2 font-mono flex items-center justify-center gap-1">
+              <time className="block text-xs sm:text-sm text-slate-500 mb-2 font-mono flex items-center justify-center gap-1">
                 <Calendar className="w-3 h-3" />
                 {new Date(post.date).toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
               </time>
             )}
             
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-6 leading-tight">
+            <h1 className="text-2xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4 sm:mb-6 leading-tight break-words">
               {post.title}
             </h1>
             
