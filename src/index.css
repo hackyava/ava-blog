@@ -1,0 +1,48 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --color-accent: #6366f1;
+  --color-dark-bg: #0f172a;
+  --color-dark-card: #1e293b;
+}
+
+@layer base {
+  body {
+    @apply bg-slate-950 text-slate-200 font-sans;
+  }
+}
+
+.markdown-body {
+  @apply prose prose-invert prose-lg max-w-none;
+}
+
+/* ... keep previous styles ... */
+/* I'll rewrite the whole file just to be safe */
+.markdown-body h1 {
+  @apply text-3xl font-bold mb-4 mt-8 text-indigo-400;
+}
+
+.markdown-body h2 {
+  @apply text-2xl font-semibold mb-3 mt-6 text-indigo-300;
+}
+
+.markdown-body p {
+  @apply mb-4 leading-relaxed text-slate-300;
+}
+
+.markdown-body code {
+  @apply bg-slate-800 px-1 py-0.5 rounded text-indigo-200 font-mono text-sm;
+}
+
+.markdown-body pre {
+  @apply bg-slate-900 p-4 rounded-lg overflow-x-auto my-4 border border-slate-800;
+}
+
+.markdown-body ul {
+  @apply list-disc list-inside mb-4 space-y-1 text-slate-300;
+}
+
+.markdown-body a {
+  @apply text-indigo-400 hover:text-indigo-300 transition-colors;
+}
