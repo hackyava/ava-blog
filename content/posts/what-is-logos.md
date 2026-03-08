@@ -34,7 +34,7 @@ In traditional web apps, your data lives on a server (Google, Meta). In many web
 
 # Tutorial: Running a Logos Blockchain Node
 
-Want to get your hands dirty? You can run a **Logos Blockchain Node** (part of the devnet) right now. This node participates in consensus using Zero-Knowledge proofs.
+Want to get your hands dirty? I just set up a **Logos Blockchain Node** (Nomos) myself. Here's exactly how I did it on Linux.
 
 **Prerequisites:**
 -   **OS:** Linux x86_64 or Raspberry Pi OS (Raspberry Pi 5).
@@ -46,61 +46,89 @@ Want to get your hands dirty? You can run a **Logos Blockchain Node** (part of t
 The node requires "circuits" for Zero-Knowledge proofs. Download the latest release (check the [releases page](https://github.com/logos-blockchain/logos-blockchain/releases/) for the current version).
 
 ```bash
-# Example for Linux x86_64 (replace {version} with actual version, e.g., v0.2.1)
-wget https://github.com/logos-blockchain/logos-blockchain/releases/download/{version}/logos-blockchain-circuits-v{circuits-version}-linux-x86_64.tar.gz
-wget https://github.com/logos-blockchain/logos-blockchain/releases/download/{version}/logos-blockchain-node-linux-x86_64-{version}.tar.gz
+# Example for Linux x86_64 (using v0.2.1)
+curl -O -L https://github.com/logos-blockchain/logos-blockchain/releases/download/0.2.1/logos-blockchain-node-linux-x86_64-0.2.1.tar.gz
+curl -O -L https://github.com/logos-blockchain/logos-blockchain/releases/download/0.2.1/logos-blockchain-circuits-v0.4.1-linux-x86_64.tar.gz
 
 # Extract them
-tar -xf logos-blockchain-circuits-*.tar.gz
-tar -xf logos-blockchain-node-*.tar.gz
+tar -xf logos-blockchain-node-linux-x86_64-0.2.1.tar.gz
+tar -xf logos-blockchain-circuits-v0.4.1-linux-x86_64.tar.gz
 ```
 
 ## 2. Install Circuits
 
-Move the circuits to the default location:
+The node looks for circuits in your home directory by default.
 
 ```bash
-mv logos-blockchain-circuits-* ~/.logos-blockchain-circuits
+mv logos-blockchain-circuits-v0.4.1-linux-x86_64 ~/.logos-blockchain-circuits
 ```
 
 ## 3. Initialize the Node
 
-You need to generate a `user_config.yaml` and connect to bootstrap peers.
+You need to generate a `user_config.yaml` and connect to bootstrap peers. I used the peers for v0.2.1:
 
 ```bash
-# Initialize with bootstrap peers (check release notes for the latest peer list!)
 ./logos-blockchain-node init \
     -p /ip4/65.109.51.37/udp/3000/quic-v1/p2p/12D3KooWL7a8LBbLRYnabptHPFBCmAs49Y7cVMqvzuSdd43tAJk8 \
-    -p /ip4/65.109.51.37/udp/3001/quic-v1/p2p/12D3KooWPLeAcachoUm68NXGD7tmNziZkVeMmeBS5NofyukuMRJh
+    -p /ip4/65.109.51.37/udp/3001/quic-v1/p2p/12D3KooWPLeAcachoUm68NXGD7tmNziZkVeMmeBS5NofyukuMRJh \
+    -p /ip4/65.109.51.37/udp/3002/quic-v1/p2p/12D3KooWKFNe4gS5DcCcRUVGdMjZp3fUWu6q6gG5R846Ui1pccHD \
+    -p /ip4/65.109.51.37/udp/3003/quic-v1/p2p/12D3KooWAnriLgXyQnGTYz1zPWPkQL3rthTKYLzuAP7MMnbgsxzR
+```
+
+**Terminal Output:**
+```text
+Detected external address via Identify: /ip4/187.124.112.158/udp/3000/quic-v1
+Config written to user_config.yaml
 ```
 
 ## 4. Run It!
+
+Start the node with your config.
 
 ```bash
 ./logos-blockchain-node user_config.yaml
 ```
 
-## 5. Get Tokens (Devnet Faucet)
+## 5. Verify It's Working
 
-1.  Find your node's public key in `user_config.yaml`:
-    ```bash
-    grep -A3 known_keys user_config.yaml
-    ```
-2.  Copy a key and go to the **[Logos Faucet](https://devnet.blockchain.logos.co/web/faucet/)**.
-3.  Request funds.
-4.  Verify balance:
-    ```bash
-    curl http://localhost:8080/wallet/{your-key}/balance
-    ```
+Once it's running, you can check its status via the local API.
 
-## 6. Check Status
-
-Is your node syncing?
-
+**Check Peer Connections:**
 ```bash
-curl -w "\n" http://localhost:8080/cryptarchia/info
+curl -s http://localhost:8080/network/info | jq
 ```
-Look for `"mode": "Online"` (it starts in `Bootstrapping`).
+
+**Output:**
+```json
+{
+  "listen_addresses": [
+    "/ip4/127.0.0.1/udp/3000/quic-v1",
+    "/ip4/172.18.0.2/udp/3000/quic-v1"
+  ],
+  "peer_id": "12D3KooWQYwzKXn4v7ZQA59G2FXH4W4Exg6CTu2BPRRSYLRWmwmt",
+  "n_peers": 4,
+  "n_connections": 7,
+  "n_pending_connections": 3
+}
+```
+*I successfully connected to 4 peers!*
+
+**Check Sync Status:**
+```bash
+curl -s http://localhost:8080/cryptarchia/info | jq
+```
+
+**Output:**
+```json
+{
+  "lib": "1820d270a382d5aff2cf3d2155802202aa01f375d49def8d2738fbe617d45978",
+  "tip": "b1b05c6566f6372e6033244da0d0b2666cce58c212fd03844abf35f984454ed0",
+  "slot": 12049,
+  "height": 604,
+  "mode": "Bootstrapping"
+}
+```
+*`"mode": "Bootstrapping"` means it's currently syncing headers. It will switch to `"Online"` once caught up.*
 
 ---
 
