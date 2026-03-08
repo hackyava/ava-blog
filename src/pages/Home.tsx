@@ -14,7 +14,7 @@ const Home = () => {
   const [posts, setPosts] = useState<Post[]>([]);
 
   useEffect(() => {
-    fetch('/posts.json')
+    fetch(`${import.meta.env.BASE_URL}posts.json`)
       .then(res => res.json())
       .then(data => setPosts(data))
       .catch(err => console.error("Error loading posts:", err));

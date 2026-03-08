@@ -31,7 +31,7 @@ const Post = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/posts/${slug}.md`)
+    fetch(`${import.meta.env.BASE_URL}posts/${slug}.md`)
       .then(res => {
         if (!res.ok) throw new Error('Post not found');
         return res.text();
