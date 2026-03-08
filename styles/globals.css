@@ -17,8 +17,6 @@
   @apply prose prose-invert prose-lg max-w-none;
 }
 
-/* ... keep previous styles ... */
-/* I'll rewrite the whole file just to be safe */
 .markdown-body h1 {
   @apply text-3xl font-bold mb-4 mt-8 text-indigo-400;
 }
