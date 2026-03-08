@@ -1,0 +1,9 @@
+[
+  {
+    "slug": "hello-world",
+    "title": "Hello, World.",
+    "date": "2026-03-08",
+    "excerpt": "My first step into the digital void. Setting up this blog with React, Vite, and Markdown.",
+    "tags": ["personal", "tech", "react"]
+  }
+]
